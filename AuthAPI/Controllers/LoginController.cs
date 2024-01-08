@@ -4,12 +4,13 @@ using AuthApi.Repositories;
 using AuthApi.Services;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Mail;
 namespace AuthApi.Controllers
 {
 
     public class UserDTO
     {        
-        public required string Name { get; set; }
+        public required MailAddress Email { get; set; }
         public required string Password { get; set; }        
     } 
 
@@ -20,10 +21,10 @@ namespace AuthApi.Controllers
     {
         [HttpPost]
         [Route("/login")]
-        public async Task<ActionResult<dynamic>> Authenticate([FromBody] UserDTO model)
-            {
+        public ActionResult<dynamic> Authenticate([FromBody] UserDTO model)
+        {
             // Recupera o usuario
-            var user = UserRepository.Get(model.Name, model.Password);
+            var user = UserRepository.Get(model.Email, model.Password);
 
             //Verifica se usuario é nulo
             if (user == null)

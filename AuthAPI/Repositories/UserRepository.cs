@@ -1,22 +1,21 @@
-﻿using AuthApi.Models;
+﻿using System.Net.Mail;
+using AuthApi.Models;
 
 namespace AuthApi.Repositories
 {
     public static class UserRepository
     {
-
-        public static User? Get(string name, string password)
+        public static List<User> users = [];
+        public static User? Get(MailAddress email, string password)
         {
-            var clientes = new List<User>
-            {
-            new() { Name = "joao",Email =  "joao@email.com",ID = 1 , Password = "joao01", Role = "USER"},
-            new() { Name = "maria", Email = "maria@email.com", ID = 2, Password = "maria01", Role = "ADMIN" },
-            new() { Name = "ana", Email = "ana@email.com", ID = 3, Password = "ana01", Role = "USER" }
-            };
+            
+           
+            users.Add(new() { Name = "joao",Email =  new MailAddress("joao@email.com"),ID = 1 , Password = "joao01", Role = "USER"});
+            users.Add(new() { Name = "maria", Email = new MailAddress("maria@email.com"), ID = 2, Password = "maria01", Role = "ADMIN" });
+            users.Add(new() { Name = "ana", Email = new MailAddress("ana@email.com"), ID = 3, Password = "ana01", Role = "USER" });
 
-
-            return clientes.FirstOrDefault(cli =>
-            cli.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) &&
+            return users.FirstOrDefault(cli =>
+            cli.Email.Equals(email) &&
             cli.Password == password);
         }
     }
